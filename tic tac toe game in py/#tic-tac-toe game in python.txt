@@ -1,0 +1,118 @@
+#tic-tac-toe game in python
+
+
+n = 1
+# global n is declared
+
+
+def board():
+    board = [['_'] * 3 for _ in range(3)]
+    return board
+
+
+def board_places(board):
+    for i in range(len(b)):
+        for j in range(len(b)):
+            print(b[i][j], end=" ")
+        print()
+
+
+def check_row(board, choice, winner):
+    for i in range(len(board)):
+        row = 0
+        for j in range(len(board)):
+            if board[i][j] == choice:
+                row += 1
+            if (row == 3):
+                print(f"{winner} is the winner!")
+                return True
+
+
+def check_col(board, choice, winner):
+    for i in range(len(board)):
+        col = 0
+        for j in range(len(board)):
+            if board[j][i] == choice:
+                col += 1
+            if col == 3:
+                print(f"{winner} is the winner!")
+                return True
+
+
+def check_diag(board, choice, winner):
+    diag = 0
+    rdiag = 0
+    for i in range(3):
+        for j in range(3):
+            if i == j:
+                if board[i][j] == choice:
+                    diag += 1
+            if j == len(board) - i - 1:
+                if board[i][j] == choice:
+                    rdiag += 1
+            if diag == 3 or rdiag == 3:
+                print(f"{winner} is the winner!")
+                return True
+
+
+def check_availability(board, x_cor, y_cor, choice):
+    global n
+    if board[x_cor][y_cor] == '_':
+        board[x_cor][y_cor] = choice
+        return True
+    else:
+        print("place is already occupied try again!")
+        n = n - 1
+
+
+def chance(person1, person2):
+    global n
+    if n % 2 == 0:
+        n += 1
+        return person2
+
+    else:
+        n += 1
+        return person1
+
+
+def choice(name, o, x):
+    if name == player1:
+        return x
+    else:
+        return o
+
+
+b = board()
+player1 = input("enter name of the player 1: ")
+player2 = input("enter name of the player 2: ")
+player1_choice1 = input("enter player1 symbol: ")
+player2_choice2 = input("enter player2 symbol: ")
+print("game is starting all the best!")
+board_places(b)
+print()
+win = 0
+count = 9
+
+while count > 0:
+    name = chance(player1, player2)
+    print(name)
+    x_cor = int(input("enter the row number: "))
+    y_cor = int(input("enter the col number: "))
+    ch = choice(name, player2_choice2, player1_choice1)
+
+    if check_availability(b, x_cor, y_cor, ch):
+        for i in range(len(b)):
+            for j in range(len(b)):
+                b[x_cor][y_cor] = ch
+        count -= 1
+
+        board_places(b)
+        print()
+
+    if check_row(b, ch, name) or check_col(b, ch, name) or check_diag(b, ch, name):
+        win = 1
+        break
+
+if win != 1:
+    print("Draw Match")
